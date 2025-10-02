@@ -1,0 +1,65 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Template para criar uma instancia EC2 t2.micro.",
+  "Resources": {
+    "MyEC2SecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Permite acesso SSH e HTTP.",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "MyEC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": "t3.micro",
+        "ImageId": "ami-052064a798f08f0d3",
+        "KeyName": "lab-01",
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "MyEC2SecurityGroup",
+              "GroupId"
+            ]
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "MinhaPrimeiraEC2"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "InstanceId": {
+      "Description": "ID da instancia EC2.",
+      "Value": {
+        "Ref": "MyEC2Instance"
+      }
+    },
+    "PublicIp": {
+      "Description": "IP Publico da instancia EC2.",
+      "Value": {
+        "Fn::GetAtt": [
+              "MyEC2Instance",
+              "PublicIp"
+        ]
+      }
+    }
+  }
+}
