@@ -33,28 +33,45 @@ Apesar de ter falhado, a confiabilidade do CloudFormation se mostrou essencial. 
 Esta experiência ressaltou um ponto crucial: o CloudFormation não apenas automatiza o processo de implantação, mas também age como uma rede de segurança vital, protegendo o ambiente contra infraestruturas incompletas ou corrompidas.
 
 ## Templates do Projeto
-  * Template 1: Criação de uma instância EC2 do tipo t3.micro com um grupo de segurança associado com acesso HTTP e SSH, onde o template esta anexo com o nome de: EC2-template.json
+  * Template 1: Criação de uma instância EC2 do tipo t3.micro com um grupo de segurança associado com acesso HTTP e SSH, onde o template esta anexo com o nome de: ![EC2-template](EC2-template.json) 
 
     Status: Concluído com sucesso. ✅
 
-![Figura 1]()
-Figura 1 - Template do Stack do EC2
-
-  * Template 2: Criação de uma instância EC2 do tipo t3.micro para a inicialização de um servidor de firewall. O template está em anexo com o nome de:  
+  * Template 2: Criação de uma instância EC2 do tipo t3.micro para a inicialização de um servidor de firewall. O template está em anexo com o nome de: ![Template Firewall](03-Firewall.yaml)
 
     Status: Concluído com sucesso. ✅
-![Figura 2](
-Template 3: (Descreva a função deste template, ex: database-setup.json)
+    
+![Figura 1](imagem/ec2.png)
+Figura 1 - Instâncias e Security Group Criados
+
+ * Template 3: Criar 3 tipos de recursos, garantindo que eles sejam configurados de forma segura e padronizada.
+   * Instância EC2: Provisiona uma máquina virtual (t3.micro por padrão) com um sistema operacional Ubuntu. O template configura automaticamente a AMI correta para a região em que está sendo executado e instala o python3-pip na inicialização.
+   *  Grupo de Segurança (Security Group): Cria um firewall virtual para a instância EC2, permitindo tráfego de entrada na porta 22 (para acesso via SSH) de qualquer IP, o que facilita o acesso para configuração.
+   *  Bucket S3: Cria um bucket para armazenamento de arquivos, com o nome s3-foundtion.
+   *  Usuário e Grupo IAM: Provisiona um grupo de usuários chamado GPO-ADMIN-LAB e um usuário (debora.mendes) que é automaticamente adicionado a esse grupo. Essa é uma prática de segurança recomendada para gerenciar acessos.
+arquivo em anexo do template: ![Template EC2 e Bucket S3](04-EC2_S3_UserGroup.yaml)
 
 Status: Falha de execução e rollback bem-sucedido. ⚠️
 
-Conclusão e Lições Aprendidas
-Este desafio prático foi uma oportunidade de ouro para entender, em primeira mão, o valor do CloudFormation no gerenciamento de riscos em implantações de larga escala. A capacidade de um serviço de reverter automaticamente uma falha é um fator decisivo para a construção de arquiteturas resilientes.
+### Apesar de não ter concluído com sucesso todo o template, a AWS CloudFormation conseguiu criar o Security Group, o Bucket S3 porém não concluiu com sucesso a instância e a criação do usuário.
 
-Com este projeto, aprofundei meus conhecimentos sobre:
+![a](imagem/Stacks.png)
+Figura 2 - Stacks 
 
-Modelagem de recursos em templates JSON.
+![b2](imagem/S3Criado.png)
+Figura 3 - Buckets S3 Criados
 
-Interpretação de logs de erro do CloudFormation.
+![b4](imagem/TemplateStack.png)
+Figura 4 - Template 1 
 
-Confiança na robustez do sistema de rollback para evitar problemas maiores.
+
+## Conclusão e Lições Aprendidas
+Este desafio prático foi uma oportunidade para entender o valor do CloudFormation no gerenciamento de riscos em implantações de larga escala. A capacidade de um serviço de reverter automaticamente uma falha é um fator decisivo para a construção de arquiteturas resilientes.
+
+ Com este projeto, aprofundei meus conhecimentos sobre:
+
+ * Modelagem de recursos em templates JSON.
+
+ * Interpretação de logs de erro do CloudFormation.
+
+ * Confiança na robustez do sistema de rollback para evitar problemas maiores.
